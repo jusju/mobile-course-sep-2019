@@ -3,12 +3,21 @@ import { Alert, Button, TextInput, StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   const [infotext, setInfoText] = useState("Guess a number between 1-100");
-  const [guessNum, setGuessNum] = useState(0);
+  const [guessNum, setGuessNum] = useState("");
+  const [guessTimes, setGuessTimes] = useState(0);
+  const [randomNumber, setRandomNumber] = useState(Math.floor(Math.random() * 100) + 1);
 
   guessPressed = () => {
     console.log(guessNum);
-    let guessNumber = Math.floor(Math.random() * 100) + 1;
-    setInfoText(guessNumber);
+    if(parseInt(guessNum) > randomNumber) {
+      setInfoText("You guess is too high");
+      setGuessTimes(guessTimes+1);
+    } else if(parseInt(guessNum) < randomNumber) {
+      setInfoText("You guess is too low");
+      setGuessTimes(guessTimes+1);
+    } else {
+      Alert.alert("You guessed the number in " + guessTimes + " guesses");
+    }
   } 
 
   return (
@@ -17,7 +26,8 @@ export default function App() {
       <TextInput
         keyboardType="numeric"
         style={{width:50, borderColor:'gray', borderWidth: 1}}
-        onChangeText={(text) => setGuessNum(text)}
+        onChangeText={(guessNum) => setGuessNum(guessNum)}
+        value={guessNum}
       />
       <Button onPress={guessPressed} title="Make Guess"/>
     </View>
